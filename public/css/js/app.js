@@ -39,16 +39,17 @@ const desplayPokemons = (pokemon) => {
         <li class=" col s3" >
        
       
-        <div class="card " >
+        <div class="card " onclick="selectpokemon(${elemnt.Id})">
         
         <p class=" center grey-text text-darken-4 ">${elemnt.Id}</p>
         <div class=" center ">
-             <img class="activator onclick="selectpokemon(${elemnt.Id})""  src="${elemnt.Img} "/>
+             <img class="activator"  src="${elemnt.Img} "/>
                  </div>
        <h4 class="card-title activator grey-text text-darken-4 center ">${elemnt.Name}</h4>
        <p class=" center grey-text text-darken-4 ">${elemnt.type}</p>
+      
        </div>
-       <
+
        </li>
         
        
@@ -61,7 +62,7 @@ const desplayPokemons = (pokemon) => {
 const  selectpokemon= async(id)=>{
     let url = `https://pokeapi.co/api/v2/pokemon/${id}`;
    
-        const res = await fetch(url);
+          const res = await fetch(url);
          const pokemon= await res.json();
          console.log(pokemon)
          popup(pokemon);
@@ -126,16 +127,23 @@ pokedex.innerHTML=pokemondetails
 }
 searchBar.addEventListener("keyup", (e) => {
     const searchString=e.target.value;
+   let x=0;
     const filterdpokemon=arrayHolder.filter(pokemon=>{
-      return  pokemon.Name.includes(searchString)
+      return  pokemon.Name.includes(searchString);
+     
+      
     })
-    desplayPokemonsfromSearch(filterdpokemon)
+    
+ filterdpokemon.length!=100?desplayPokemonsfromSearch(filterdpokemon):desplayPokemons(filterdpokemon)
+      
+ 
+    
    });
    const desplayPokemonsfromSearch = (pokemon) => {
-       console.log(pokemon);
+       console.log(pokemon.length);
        const dataHolder = [];
-      
-         const elemnt = pokemon[Math.floor(Math.random() * pokemon.length)];
+       for(let i=0;i<pokemon.length;i++){
+         const elemnt = pokemon[i];
          dataHolder.push(`
              
              <li class=" col s3" >
@@ -159,5 +167,5 @@ searchBar.addEventListener("keyup", (e) => {
      
        pokemonHtml = dataHolder.join("");
        pokedex.innerHTML = pokemonHtml;
-     };
+     }};
 fetchpokemon();
